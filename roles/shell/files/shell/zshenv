@@ -1,0 +1,4 @@
+# Include _bin in PATH if exists
+if [ -d "$HOME/_bin" ]; then
+	export PATH=$HOME/_bin:$PATH
+fi
