@@ -1,0 +1,34 @@
+---
+
+packages:
+  - zsh
+  - zsh-static
+  - atop
+  - iotop
+  - htop
+  - tmux
+  - screen
+  - git
+  - strace
+  - lnav
+  - sudo
+  - vim
+  - ifstat
+  - sysstat
+  - debsums
+
+# Add your users to this variable
+set_shell:
+  - root
+
+shell_files:
+  - bash_logout
+  - bashrc
+  - screenrc
+  - tmux.conf
+  - vimrc
+  - zshenv
+  - zshrc
+
+# TODO Only system_wide is supported
+system_wide: true

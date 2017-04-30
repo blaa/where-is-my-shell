@@ -1,0 +1,3 @@
+
+# Test / development
+localhost ansible_connection=local

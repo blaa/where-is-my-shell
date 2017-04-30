@@ -1,0 +1,11 @@
+---
+
+- include: packages.yml
+  when: system_wide == true
+
+- include: shell_system.yml
+  when: system_wide == True
+
+- include: shell_user.yml
+  when: system_wide == False
+

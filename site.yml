@@ -1,0 +1,9 @@
+
+# Install shell on all hosts
+- hosts: all
+  roles:
+    - shell
+
+  # Set only single user - not yet supported.
+  #vars:
+  #  system_wide: false
