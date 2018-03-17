@@ -16,6 +16,7 @@ packages:
   - ifstat
   - sysstat
   - debsums
+  - ranger
 
 # Add your users to this variable
 set_shell:
