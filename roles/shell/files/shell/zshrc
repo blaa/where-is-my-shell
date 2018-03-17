@@ -1,5 +1,3 @@
-# Installed with Ansible
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -10,6 +8,13 @@ export ZSH=/etc/oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="gentoo"
+
+# Set list of themes to load
+# Setting this variable when ZSH_THEME=random
+# cause zsh load theme from this variable instead of
+# looking in ~/.oh-my-zsh/themes/
+# An empty array have no effect
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -53,14 +58,12 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git debian dirhistory python sudo)
+plugins=(
+  git
+  debian dirhistory python sudo z
+)
 
 source $ZSH/oh-my-zsh.sh
-
-
-# User configuration
-alias hogs='du -s * | sort -n'
-alias go='sudo -i -u'
 
 
 setopt nohup
@@ -79,12 +82,63 @@ RPROMPT='%{$fg_bold[grey]%}(%D{%H:%M%P} : %D{%d/%m/%y})%{$reset_color%}'
 
 EDITOR="vim"
 
+# export MANPATH="/usr/local/man:$MANPATH"
 # History basic
 setopt HIST_IGNORE_SPACE
 HISTFILE=~/.history
 HISTSIZE=20000
 SAVEHIST=20000
 
+##
+# ZAW
+# Emacs-helm like searching of branches, recent directories and command history
+source /etc/zsh_zaw/zaw.zsh
+zstyle ':filter-select' max-lines 10
+zstyle ':filter-select' hist-find-no-dups yes
+
+function zaw-src-z() {
+    : ${(A)candidates::=`z 2>&1 | sed -n -e '2,$p' | sed 's/^[0-9\\. ]*//' | tac`}
+    actions=("zaw-callback-execute" "zaw-callback-replace-buffer" "zaw-callback-append-to-buffer")
+    act_descriptions=("execute" "replace edit buffer" "append to edit buffer")
+}
+
+zaw-register-src -n z zaw-src-z
+
+bindkey '^R' zaw-history
+bindkey '^xb' zaw-git-branches
+bindkey '^xz' zaw-z
+bindkey '^x^z' zaw-z
+
+
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+alias hogs='du -s * | sort -n'
+alias hogsh='du -s * .* | sort -n'
+alias go='sudo -i -u'
 
 if [ -f "$HOME/.zshrc_private" ]; then
 	source ~/.zshrc_private

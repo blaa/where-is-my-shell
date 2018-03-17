@@ -1,6 +1,7 @@
 
 # Install shell on all hosts
 - hosts: all
+  become: true
   roles:
     - shell
 
