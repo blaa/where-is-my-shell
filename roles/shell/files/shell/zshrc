@@ -109,6 +109,9 @@ bindkey '^xb' zaw-git-branches
 bindkey '^xz' zaw-z
 bindkey '^x^z' zaw-z
 
+# Fix alt-f, alt-b - broken by dirhistory plugin since 215e43aa8a (Jan 23)
+bindkey '\ef' emacs-forward-word
+bindkey '\eb' emacs-backward-word
 
 
 # You may need to manually set your language environment
