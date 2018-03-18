@@ -9,8 +9,8 @@ Configures a shell environment:
 - tmux, screen, git, vim (packages and configuration)
 - /usr/local/bin/where-is-my-shell.sh script which updates user with a shell
   from /etc/skel for pre-existing weird users which were left behind.
-- Currently works in system-wide mode only. Could configure only single user
-  you have access to (assuming the zsh package at least is available)
+- Currently works in system-wide mode only. Copy files manually if you don't
+  have root.
 
 Also:
 - Don't touch anything else. Don't break anything. Changing the root shell to
