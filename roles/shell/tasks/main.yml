@@ -13,10 +13,9 @@
 
 - name: "Required packages"
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
   tags: base
-  with_items: "{{ packages }}"
 
 - name: "Unpack shell files"
   unarchive:
