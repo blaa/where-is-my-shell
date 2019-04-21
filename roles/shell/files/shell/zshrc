@@ -110,6 +110,8 @@ function zaw-src-z() {
     act_descriptions=("execute" "replace edit buffer" "append to edit buffer")
 }
 
+# Prevent not necessary error message.
+touch $HOME/.z
 zaw-register-src -n z zaw-src-z
 
 bindkey '^R' zaw-history
