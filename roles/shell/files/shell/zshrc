@@ -4,24 +4,24 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/etc/oh-my-zsh
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="gentoo"
 
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="true"
@@ -39,32 +39,44 @@ DISABLE_AUTO_UPDATE="true"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
 HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  debian dirhistory python sudo z
+  debian 
+  dirhistory 
+  python 
+  sudo 
+  z
 )
 
 source $ZSH/oh-my-zsh.sh
 
+##
+# User configuration
+##
 
 setopt nohup
 setopt no_bg_nice
@@ -72,17 +84,13 @@ setopt no_clobber       # For > --> >|   &| means disowned
 setopt nobeep
 setopt multios          # echo foo > file1 | command instead of tee
 setopt rcquotes		# Elegant inclusion of quotes in quotes.
+setopt promptsubst
 # watch="notme"
 # logcheck=60
 
 # Jumping/removing words
 WORDCHARS='*?_-[]~=!#$%^(){}<>'
 
-RPROMPT='%{$fg_bold[grey]%}(%D{%H:%M%P} : %D{%d/%m/%y})%{$reset_color%}'
-
-EDITOR="vim"
-
-# export MANPATH="/usr/local/man:$MANPATH"
 # History basic
 setopt HIST_IGNORE_SPACE
 HISTFILE=~/.history
@@ -113,6 +121,67 @@ bindkey '^x^z' zaw-z
 bindkey '\ef' emacs-forward-word
 bindkey '\eb' emacs-backward-word
 
+##
+# Handy functions and template switching
+##
+bla-copy() {
+    # Disable RPROMPT to easy copying contents of the shell.
+    unset RPROMPT
+    unset RPS1
+}
+
+bla-set-theme() {
+    # Switch theme.
+    export PROMPT="% "
+    unset RPROMPT RPS1
+    name=${1/.zsh-theme//}
+    source $ZSH/themes/${name}.zsh-theme
+}
+
+bla-long() {
+    # Default, long-line theme.
+    PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m %{$fg_bold[blue]%}%~ %(?,%{$fg_bold[blue]%},%{$fg_bold[red]%})%(!.#.\$) %{$reset_color%}'
+    RPS1='► $(git_prompt_info)%{$fg_bold[grey]%}%D{%m-%d %H:%M}%{$reset_color%}' 
+
+    ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}"
+    ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+    ZSH_THEME_GIT_PROMPT_CLEAN=""
+    ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✗%{$fg[yellow]%}"
+}
+
+bla-short() {
+    # Short version of the theme.
+    # Useful: ▧ □ ▢⬜■ ▮ ▶ ► ●
+    PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m %{$fg_bold[blue]%}%20<…<%~%<< %(?,%{$fg_bold[blue]%},%{$fg_bold[red]%})%(!.#.λ) %{$reset_color%}'
+    RPS1='► %25>… >$(git_prompt_info)%<<%{$fg_bold[grey]%}%D{%m-%d %H:%M}%{$reset_color%}' 
+
+    ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}"
+    ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+    ZSH_THEME_GIT_PROMPT_CLEAN=""
+    ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✗%{$fg[yellow]%}"
+}
+
+bla-mobile() {
+    # Even shorter mobile-friendly theme.
+    PROMPT='%(!.%{$fg_bold[red]%}.%{$fg_bold[green]%}%n@)%m %(?,%{$fg_bold[blue]%},%{$fg_bold[red]%})%(!.#.λ) %{$reset_color%}'
+    RPS1='► %20>… >$(git_prompt_info)%<<%{$fg_bold[blue]%}%20<…<%~%<<%{$reset_color%}' 
+
+    ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}"
+    ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
+    ZSH_THEME_GIT_PROMPT_CLEAN=""
+    ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✗%{$fg[yellow]%}"
+}
+
+# Default theme
+bla-short
+
+# Auto-refresh the prompt every minute.
+TRAPALRM() {
+    zle reset-prompt
+}
+TMOUT=60
+
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -127,9 +196,6 @@ bindkey '\eb' emacs-backward-word
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -139,6 +205,8 @@ bindkey '\eb' emacs-backward-word
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Common aliases and config.
+EDITOR="vim"
 alias hogs='du -s * | sort -n'
 alias hogsh='du -s * .* | sort -n'
 alias go='sudo -i -u'
