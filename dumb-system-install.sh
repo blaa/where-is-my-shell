@@ -59,5 +59,6 @@ echo "Setting zsh as a shell for current user - you will be asked for your passw
 chsh -s /bin/zsh
 EOF
 
+chmod a+x /usr/local/bin/where-is-my-shell.sh
 
 echo Done
