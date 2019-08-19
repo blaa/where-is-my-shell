@@ -11,7 +11,7 @@ sleep 3
 ROLE=roles/shell
 FILES=$ROLE/files
 
-SKEL="bash_logout bashrc screenrc tmux.conf vimrc zshenv zshrc"
+SKEL="bash_logout bashrc screenrc tmux.conf vimrc vim zshenv zshrc"
 
 # Trying apt-get on Debian
 apt-get install -y zsh tmux screen atop iotop htop lnav ifstat sysstat ranger strace
@@ -26,7 +26,7 @@ chmod o-w,g-w /etc/oh-my-zsh /etc/zsh_zaw -R
 echo "Install files in /etc/skel"
 for filename in $SKEL;
 do
-	cp -v $FILES/shell/$filename /etc/skel/.${filename}
+	cp -R -v $FILES/shell/$filename /etc/skel/.${filename}
 done
 
 cat > /usr/local/bin/where-is-my-shell.sh <<EOF
@@ -39,6 +39,7 @@ cp -v /etc/skel/.bash_logout ~/
 cp -v /etc/skel/.bashrc ~/
 cp -v /etc/skel/.screenrc ~/
 cp -v /etc/skel/.tmux.conf ~/
+cp -v /etc/skel/.vim ~/ -R
 cp -v /etc/skel/.vimrc ~/
 cp -v /etc/skel/.zshenv ~/
 cp -v /etc/skel/.zshrc ~/

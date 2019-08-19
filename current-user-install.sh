@@ -6,7 +6,7 @@ sleep 3
 ROLE=roles/shell
 FILES=$ROLE/files
 
-SKEL="bash_logout bashrc screenrc tmux.conf vimrc zshenv zshrc"
+SKEL="bash_logout bashrc screenrc tmux.conf vimrc zshenv zshrc vim"
 
 echo "Replace repositories in /etc"
 rm -rf ~/.oh-my-zsh ~/.zsh_zaw
@@ -17,7 +17,7 @@ mv ~/zsh_zaw ~/.zsh_zaw
 echo "Install shell files"
 for filename in $SKEL;
 do
-	cp -v $FILES/shell/$filename ~/.${filename}
+	cp -R -v $FILES/shell/$filename ~/.${filename}
 done
 
 sed -i 's,/etc/oh-my-zsh,$HOME/.oh-my-zsh,g' ~/.zshrc

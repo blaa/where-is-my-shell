@@ -16,6 +16,14 @@ set wildmenu
 map <C-t> <ESC>:TlistToggle<CR>
 map <C-f> <ESC>:set invnumber<CR>
 
+let g:jellybeans_overrides = {
+\    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
+\}
+if has('termguicolors') && &termguicolors
+    let g:jellybeans_overrides['background']['guibg'] = 'none'
+endif
+colorscheme jellybeans
+
 au BufNewFile,BufRead *.latex setlocal spell spelllang=pl
 au BufNewFile,BufRead *.latex set textwidth=75
 au BufNewFile,BufRead *.template set filetype=html 
