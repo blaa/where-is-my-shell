@@ -174,8 +174,15 @@ bla-mobile() {
     ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}✗%{$fg[yellow]%}"
 }
 
-# Default theme
-bla-short
+if [[ $TERM == "dumb" ]]; then
+	# For non-interactive terminals, emacs-tramp, etc.
+	unsetopt zle
+	PS1='$ '
+	RPS1=''
+else
+	# Default theme
+	bla-short
+fi
 
 # Auto-refresh the prompt every minute.
 TRAPALRM() {
