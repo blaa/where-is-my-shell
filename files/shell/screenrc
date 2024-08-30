@@ -1,0 +1,4 @@
+shell -${SHELL}
+caption always "%{= Kw}%?%-Lw%?%{+b Kw}%n*%t%f %?(%u)%?%{= Kw}%?%+Lw%?"
+escape ^]]
+vbell off

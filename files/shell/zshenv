@@ -1,0 +1,10 @@
+# Include _bin in PATH if exists
+if [ -d "$HOME/_bin" ]; then
+	export PATH=$HOME/_bin:$PATH
+fi
+
+# tmux/screen sometimes drops -256color suffix from xterm $TERM.
+# Keep it - it's almost always correct on newer terminals.
+if [ "$TERM" = "screen" ]; then
+	TERM=screen-256color;
+fi
